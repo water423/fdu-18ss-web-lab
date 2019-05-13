@@ -1,0 +1,210 @@
+<html>
+<head>
+    <title>Chapter 10</title>
+    <link rel="stylesheet" href="lab7.css">
+    <script src="jquery-3.4.1.min.js">
+    </script>
+</head>
+<body class="tiled">
+<header>
+    <h1>Art Filters</h1>
+</header>
+<main>
+    <div id="sliderBox">
+        <form>
+            <p><label>Opacity: </label><input type="range" id="sliderOpacity" min="0" max="100" value="100" class="sliders" /> <span id="numOpacity">100</span>%</p>
+            <p><label>Saturation: </label><input type="range" id="sliderSaturation" min="1" max="300" value="100" class="sliders"/> <span id="numSaturation">100</span>%</p>
+            <p><label>Brightness: </label><input type="range" id="sliderBrightness" min="0" max="300" value="100" class="sliders" /> <span id="numsliderSaturation">100</span>%</p>
+            <p><label>Hue Rotate: </label><input type="range" id="sliderHue" min="0" max="360" value="0" class="sliders" /> <span id="numHue">0</span>deg</p>
+            <p><label>Grayscale: </label><input type="range" id="sliderGray" min="0" max="100" value="0" class="sliders"/> <span id="numGray">0</span>%</p>
+            <p><label>Blur: </label><input type="range" id="sliderBlur" min="0" max="10" value="0" class="sliders" /> <span id="numBlur">0</span>px</p>
+            <p><button id="resetFilters">Reset</button> </p>
+        </form>
+    </div>
+    <script type="text/javascript">
+        //页面加载完成之后生效
+
+        $(document).ready(function() {
+            //获取需改变CSS的图片
+            var img = $("#imgManipulated img");
+
+            //整体改变的函数
+            $("input").change(function(){
+                    //获取各个属性的当前值
+                    var opacity = $("#sliderOpacity").val();
+                    var saturation = $("#sliderSaturation").val();
+                    var brightness = $("#sliderBrightness").val();
+                    var blur = $("#sliderBlur").val();
+                    var hue = $("#sliderHue").val();
+                    var gray = $("#sliderGray").val();
+                    //相应改变图片filter属性值
+                    img.css(
+                        {
+                            "filter": "opacity(" + opacity + "%)" + "hue-rotate(" + hue + "deg)" + "saturate("+saturation+"%)" + "blur(" + blur + "px)" + "brightness(" + brightness + "%)" +  "grayscale(" + gray + "%)",
+                            "-webkit-filter": "opacity(" + opacity + "%)" + "hue-rotate(" + hue + "deg)" + "saturate("+saturation+"%)" + "blur(" + blur + "px)" + "brightness(" + brightness + "%)" + "grayscale(" + gray + "%)",
+                        }
+                    );
+                    //相应改变滑杆后的数值
+                    $("#numOpacity").text(opacity);
+                    $("#numsliderSaturation").text(brightness);
+                    $("#numSaturation").text(saturation);
+                    $("#numGray").text(gray);
+                    $("#numHue").text(hue);
+                    $("#numBlur").text(blur);
+                }
+            );
+
+            //reset按钮 清除CSS样式
+            $("#resetFilters").click(function(event){
+                //清除按钮的默认行为
+                event.preventDefault();
+                //改变滑杆的值为初始值
+                $("#sliderOpacity").val("100");
+                $("#sliderBrightness").val("100");
+                $("#sliderSaturation").val("100");
+                $("#sliderGray").val("0");
+                $("#sliderBlur").val("0");
+                $("#sliderHue").val("0");
+                //改变滑杆后数值为初始值
+                $("#numOpacity").text("100");
+                $("#numsliderSaturation").text("100");
+                $("#numSaturation").text("100");
+                $("#numGray").text("0");
+                $("#numHue").text("0");
+                $("#numBlur").text("0");
+                //改变图片的CSS值为none
+                img.css(
+                    {
+                        "filter": "none",
+                        "-webkit-filter": "none",
+                    }
+                );
+            })
+        });
+
+        //必须采用整个函数来修改 否则会造成值的覆盖
+        //一下注释部分为错误的尝试
+        /**
+            //改变Opacity
+            $("#sliderOpacity").change(function () {
+                    //获取滑动条移动后的值
+                    var Opacity = $(this).val();
+                    //对应设置CSS值
+                    img.css(
+                        {
+                            "filter": "opacity(" + Opacity + "%)",
+                            "-webkit-filter": "opacity(" + Opacity + "%)",
+                        }
+                    );
+                    //对应设置滑动条后的当前数值
+                    $("#numOpacity").text(Opacity);
+                }
+            );
+            //以下各个属性同理
+
+            //改变Saturation
+            $("#sliderSaturation").change(function(){
+                   var Saturation = $(this).val();
+                   img.css(
+                      {
+                       "filter": "saturate("+Saturation+"%)",
+                       "-webkit-filter" :"saturate("+Saturation+"%)",
+                      }
+                   );
+                   $("#numSaturation").text(Saturation);
+               }
+            );
+
+            //改变Brightness
+            $("#sliderBrightness").change(function () {
+                    var Brightness = $(this).val();
+                    img.css(
+                        {
+                            "filter": "brightness(" + Brightness + "%)",
+                            "-webkit-filter": "brightness(" + Brightness + "%)",
+                        }
+                    );
+                    $("#numsliderSaturation").text(Brightness);
+                }
+            );
+
+            //改变Blur
+            $("#sliderBlur").change(function () {
+                    var Blur = $(this).val();
+                    img.css(
+                        {
+                            "filter": "blur(" + Blur + "px)",
+                            "-webkit-filter": "blur(" + Blur+ "px)",
+                        }
+                    );
+                    $("#numBlur").text(Blur);
+                }
+            );
+
+            //改变Gray
+            $("#sliderGray").change(function () {
+                    var Gray = $(this).val();
+                    img.css(
+                        {
+                            "filter": "grayscale(" + Gray + "%)",
+                            "-webkit-filter": "grayscale(" + Gray + "%)",
+                        }
+                    );
+                    $("#numGray").text(Gray);
+                }
+            );
+
+            //改变Hue
+            $("#sliderHue").change(function () {
+                var Hue = $(this).val();
+                    img.css(
+                        {
+                            "filter": "hue-rotate(" + Hue + "deg)",
+                            "-webkit-filter": "hue-rotate(" + Hue + "deg)",
+                        }
+                    );
+                    $("#numHue").text(Hue);
+                }
+            );
+    **/
+    </script>
+    <figure id="imgManipulated">
+        <img src="images/medium/painting1.jpg" >
+        <figcaption>
+            <em>Still Life with Flowers in a Glass Vase</em> <br>
+            <span>Jan Davidsz. de Heem, 1650 - 1683</span>
+        </figcaption>
+    </figure>
+    <div id="thumbBox">
+        <div><img src="images/small/painting1.jpg"  alt="Still Life with Flowers in a Glass Vase" title="Jan Davidsz. de Heem, 1650 - 1683" id="img1" onclick="click(this.id)"/></div>
+        <div><img src="images/small/painting2.jpg"  alt="Portrait of Alida Christina Assink" title="Jan Adam Kruseman, 1833" id="img2" onclick="click(this.id)"/></div>
+        <div><img src="images/small/painting3.jpg"  alt="Self-portrait" title="Vincent van Gogh, 1887" id="img3" onclick="click(this.id)"/></div>
+        <div><img src="images/small/painting4.jpg"  alt="William II, Prince of Orange, and his Bride, Mary Stuart" title="Anthony van Dyck, 1641" id="img4" onclick="click(this.id)"/></div>
+        <div><img src="images/small/painting5.jpg"  alt="Milkmaid" title="Johannes Vermeer, c. 1660" id="img5" onclick="click(this.id)"/></div>
+    </div>
+    <script>
+        //页面加载完成之后生效
+        $(document).ready(function() {
+            $(function () {
+                //点击相应图片后的方法
+                $("#thumbBox div img").click(function () {
+                    //替换src路径
+                    var src = $(this).attr("src").replace("small", "medium");
+                    $("#imgManipulated img").attr("src", src);
+
+                    //替换title值
+                    var title = $(this).attr("alt");
+                    $("#imgManipulated figcaption em").text(title);
+
+                    //替换anthor值
+                    var author = $(this).attr("title");
+                    $("#imgManipulated figcaption span").text(author);
+                })
+            })
+        })
+    </script>
+</main>
+<script>
+</script>
+</body>
+</html>
